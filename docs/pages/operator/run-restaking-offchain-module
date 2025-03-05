@@ -1,0 +1,10 @@
+# Validator Quickstart
+
+
+## Symbiotic
+
+Run docker compose up in this [repo](https://github.com/interstate-labs/avs/tree/main/symbiotic_offchain)
+
+## Karak
+
+Run docker compose up in this [repo]()
