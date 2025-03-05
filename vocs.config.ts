@@ -59,6 +59,15 @@ export default defineConfig({
           link: '/user/api-specification',
         },
       ]
+    },
+    {
+      text: 'For Operators',
+      items: [
+        {
+          text: 'Run Restaking Offchain (Karak, Eigenlayer, Symbiotic)',
+          link: '/operator/run-restaking-offchain-module',
+        },
+      ]
     }
   ],
 })
