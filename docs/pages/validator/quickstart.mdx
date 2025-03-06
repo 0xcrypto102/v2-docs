@@ -16,6 +16,15 @@ git clone https://github.com/interstate-labs/eth-docker.git
 cd eth-docker/interstate
 ```
 
+### Update .env file in eth-docker
+```
+# JWT secret for CL:EL:Sidecar connection. 
+Create and set JWT HEX (eg. dc49981516e8e72b401a63e6405495a32dafc3939b5d6d83cc319ac0388bca1b)
+You can use openssl => openssl rand -hex 32 | tr -d "\n" 
+JWT_SECRET=
+
+```
+
 ### Update the secrets.env file
 
 Warning ensure the below fields are unique every time this setup is run. Signing up for two validators with the same private keys will cause a double attestation which will result in a slash of 1 eth and exit.
@@ -34,7 +43,7 @@ ETH1_FROM_PRIV=
 
 ### Run the setup
 ```
-./quickstart.sh // this generates the keystores, deposits to become a validator, runs valdiator nodes and sidecar.
+./quickstart.sh // this generates the keystores, deposits to become a validator, runs valdiator node.
 ```
 
 ### Wait until the beacon node is fully synced and then run
@@ -46,6 +55,35 @@ cd .. && ./ethd keys import // Register validator keys to validator nodes
 // Broadcast that message in https://holesky.beaconcha.in/tools/broadcast to set withdrawal addresses.
 ```
 
+And you're running ethereum validator on testnet!
 
 
-And you're running the interstate-sidecar and an ethereum validator on testnet!
+# Web3Signer Start
+
+# Sidecar & Commit-boost-pbs Start on another vpc
+
+### Set .config file  in eth-docker/interstate/.config
+```
+BEACON_API_URL= [input beacon url]
+EXECUTION_API_URL= [input execution url]
+ENGINE_API_URL= [input engine api url]
+WEB3SIGNER_URL= [input web3signer url]
+JWT= [input JWT you created to run validator]
+FEE_RECIPIENT = [input your fee receiver address (execution address)]
+``` 
+
+### Set the TLS config  
+```
+In tls folder (/eth-docker/interstate/tls)
+create combined.pem and web3signer.crt file to be used to connect to the web3Signer server.
+```
+
+### Set Beacon rpc in cb-config.toml file in eth-docker/interstate/cb-config.toml
+beacon_rpc=[input beacon url]
+
+### Run Sidecar and commit-boost-pbs
+```
+in eth-docker/interstate
+docker compose up -d
+```
+
