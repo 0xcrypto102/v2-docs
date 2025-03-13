@@ -30,6 +30,10 @@ export default defineConfig({
           link: '/validator/quickstart',
         },
         {
+          text: 'Verify Setup',
+          link: '/validator/verify',
+        },
+        {
           text: 'Long Form Setup',
           link: '/validator/long-form-setup',
         },
