@@ -16,13 +16,13 @@ helm install proposer-commitment-network ./proposer-commitment-network
 Please update values.yaml, configMap.yaml, deployment.yaml and service.yaml files
 
 ### How to set env to connect sidecar to external signer
-
+```
     https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/values.yaml#L61C1-L61C3
 
     https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/templates/configMap.yaml#L55
 
     Here, please update the COMMIT_BOOST_SIGNER_URL with external signer link
-
+```
 ### How to run
 ```
     helm install <namespace> ./<namespace>
