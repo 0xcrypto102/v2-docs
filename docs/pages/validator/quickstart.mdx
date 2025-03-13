@@ -1,89 +1,61 @@
 # Validator Quickstart
+**We recommend starting interstate from helm charts**
 
-### Install Dependencies
-- Install docker by following: https://docs.vultr.com/how-to-install-docker-on-ubuntu-24-04
-- Install Go by following: https://wiki.crowncloud.net/?How_To_Install_Go_on_Ubuntu_24_04
-- Install JQ by following: https://jqlang.github.io/jq/
-    - ```sudo apt install jq```
-- Install eth2-val-tools: https://github.com/protolambda/eth2-val-tools
-    - ```go install github.com/protolambda/eth2-val-tools@latest ```
-- Install ethereal: https://github.com/wealdtech/ethereal/v2
-    - ```go install github.com/wealdtech/ethereal/v2@latest ```
-
-### Clone the repo
+1. Set the Env variables
+2. Start the helm charts with: 
 ```
-git clone https://github.com/interstate-labs/eth-docker.git
-cd eth-docker/interstate
+helm install proposer-commitment-network ./proposer-commitment-network
 ```
 
-### Update .env file in eth-docker
-```
-# JWT secret for CL:EL:Sidecar connection. 
-Create and set JWT HEX (eg. dc49981516e8e72b401a63e6405495a32dafc3939b5d6d83cc319ac0388bca1b)
-You can use openssl => openssl rand -hex 32 | tr -d "\n" 
-JWT_SECRET=
 
-```
+## Setting the Env Variables
+### Update yaml
 
-### Update the secrets.env file
+Please update values.yaml, configMap.yaml, deployment.yaml and service.yaml files
 
-Warning ensure the below fields are unique every time this setup is run. Signing up for two validators with the same private keys will cause a double attestation which will result in a slash of 1 eth and exit.
+### How to set env to connect sidecar to external signer
 
-```
-// Set different values for each of these, use `eth2-val-tools mnemonic` command to generate mnemonic
-VALIDATORS_MNEMONIC=
-WITHDRAWALS_MNEMONIC=
+    https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/values.yaml#L61C1-L61C3
 
-// Set private and public keys which store eth. 
-# Public address of wallet which holds testETH
-ETH1_FROM_ADDR=
-# Private key of the wallet which holds testETH
-ETH1_FROM_PRIV=
-```
+    https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/templates/configMap.yaml#L55
 
-### Run the setup
-```
-./quickstart.sh // this generates the keystores, deposits to become a validator, runs valdiator node.
-```
+    Here, please update the COMMIT_BOOST_SIGNER_URL with external signer link
 
-### Wait until the beacon node is fully synced and then run
-```
-cd .. && ./ethd keys import // Register validator keys to validator nodes
-./set_withdrawal_address.sh // After validators are activated, you can set withdrawal addresses
+### How to run
 
-// After running the above line, you can see the broadcast message in `./staking_deposit-cli-948d3fc-linux-amd64/bls_to_execution_changes/`
-// Broadcast that message in https://holesky.beaconcha.in/tools/broadcast to set withdrawal addresses.
-```
+    helm install <namespace> ./<namespace>
 
-And you're running ethereum validator on testnet!
+    eg: helm install proposer-commitment-network ./proposer-commitment-network
+
+## How to set envs for interstate-cb module
+
+    In values.yaml
+
+        `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/values.yaml#L26` and `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/values.yaml#L28`
+
+        `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/values.yaml#L83` and `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/values.yaml#L89`
+
+        Please update the CHAIN Name and BEACON_RPC
+
+    In templates/configMap.yaml
+
+        `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/templates/configMap.yaml#L7` and `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/templates/configMap.yaml#L13`
+
+        Please update the CHAIN Name and BEACON_RPC
+
+## How to set envs for interstate-sidecar
+
+    In values.yaml
+
+        From `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/values.yaml#L37` to `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/values.yaml#L61`
+
+        Please update envs for interstate-sidecar
+
+    In templates/configMap.yaml
+    
+        From `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/templates/configMap.yaml#L32` to `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/templates/configMap.yaml#L55`
+
+        Please update envs for interstate-sidecar
 
 
-# Web3Signer Start
-
-# Sidecar & Commit-boost-pbs Start on another vpc
-
-### Set .config file  in eth-docker/interstate/.config
-```
-BEACON_API_URL= [input beacon url]
-EXECUTION_API_URL= [input execution url]
-ENGINE_API_URL= [input engine api url]
-WEB3SIGNER_URL= [input web3signer url]
-JWT= [input JWT you created to run validator]
-FEE_RECIPIENT = [input your fee receiver address (execution address)]
-``` 
-
-### Set the TLS config  
-```
-In tls folder (/eth-docker/interstate/tls)
-create combined.pem and web3signer.crt file to be used to connect to the web3Signer server.
-```
-
-### Set Beacon rpc in cb-config.toml file in eth-docker/interstate/cb-config.toml
-beacon_rpc=[input beacon url]
-
-### Run Sidecar and commit-boost-pbs
-```
-in eth-docker/interstate
-docker compose up -d
-```
 
