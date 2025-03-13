@@ -38,10 +38,6 @@ export default defineConfig({
           link: '/validator/long-form-setup',
         },
         {
-          text: 'Helm Charts & Kubernetes',
-          link: '/validator/helm-charts',
-        },
-        {
           text: 'How To Run Signer',
           link: '/validator/how-to-run-signer',
         }
