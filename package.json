@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "@types/react": "latest",
+    "prettier": "^3.5.3",
     "typescript": "latest"
   }
 }
