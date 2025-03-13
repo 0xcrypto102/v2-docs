@@ -42,8 +42,8 @@ export default defineConfig({
           link: '/validator/helm-charts',
         },
         {
-          text: 'Web3 Signer',
-          link: '/validator/web3-signer',
+          text: 'How To Run Signer',
+          link: '/validator/how-to-run-signer',
         }
       ]
     },
