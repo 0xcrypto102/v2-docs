@@ -4,9 +4,13 @@
 Helm charts: https://github.com/interstate-labs/proposer-commitment-network/tree/main/helm-charts
 
 1. Set the Env variables
-2. Start the helm charts with: 
+2. Create the helm package
 ```
-helm install proposer-commitment-network ./proposer-commitment-network
+helm create helm-charts
+```
+3. Install the helm charts with: 
+```
+helm install helm-charts ./helm-charts
 ```
 
 
@@ -14,58 +18,31 @@ helm install proposer-commitment-network ./proposer-commitment-network
 *The below setup enables you to run the interstate-pbs module and interstate-sidecar via kubernetes helm chart. You are expected to have a running signer (for instructions see signer section) and validator. The helm charts below will connect pbs-module&sidecar to signer.*
 
 ## Setting the Env Variables
-### Update yaml
 
-Please update values.yaml, configMap.yaml, deployment.yaml and service.yaml files
+Please update values.yaml file
 
-### How to set env to connect sidecar to external signer
+### How to set envs for interstate-cb module
 ```
-    https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/values.yaml#L61C1-L61C3
+port: https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L179
 
-    https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/templates/configMap.yaml#L55
+image repo: https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L183
 
-    Here, please update the COMMIT_BOOST_SIGNER_URL with external signer link
+image tag: https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L186
+
+configs: https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L193 ~ https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L217
 ```
-### How to run
+### How to set envs for interstate-sidecar
 ```
-    helm install <namespace> ./<namespace>
+image repo: https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L13
 
-    eg: helm install proposer-commitment-network ./proposer-commitment-network
+image port: https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L16
+
+envs: https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L132 ~ https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L170
 ```
-## How to set envs for interstate-cb module
+## Check helm-charts
 ```
-    In values.yaml
-
-        `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/values.yaml#L26` and `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/values.yaml#L28`
-
-        `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/values.yaml#L83` and `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/values.yaml#L89`
-
-        Please update the CHAIN Name and BEACON_RPC
+kubectl get pods
 ```
-```
-    In templates/configMap.yaml
-
-        `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/templates/configMap.yaml#L7` and `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/templates/configMap.yaml#L13`
-
-        Please update the CHAIN Name and BEACON_RPC
-```
-## How to set envs for interstate-sidecar
-```
-    In values.yaml
-
-        From `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/values.yaml#L37` to `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/values.yaml#L61`
-
-        Please update envs for interstate-sidecar
-```
-```
-    In templates/configMap.yaml
-    
-        From `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/templates/configMap.yaml#L32` to `https://github.com/interstate-labs/proposer-commitment-network-dev/blob/feat/helm/proposer-commitment-network/templates/configMap.yaml#L55`
-
-        Please update envs for interstate-sidecar
-```
-
-
 # Verify Setup
 This will check the sidecar, commit-boost instance, and relay to see your setup was run correctly.
 
