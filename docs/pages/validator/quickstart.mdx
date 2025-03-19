@@ -18,23 +18,41 @@ helm install helm-charts ./helm-charts
 #### Interstate Sidecar
 
 ```
-COMMITMENT_PORT=9061
-METRICS_PORT=8018
+# -- Port for commitment service
+COMMITMENT_PORT=9061  
+# -- Port for metrics service
+METRICS_PORT=8018    
+# -- Blockchain network to connect to
 CHAIN=kurtosis
+# -- URL for the beacon node API
 BEACON_API_URL=http://127.0.0.1:33404 
+# -- URL for the execution client API
 EXECUTION_API_URL=http://127.0.0.1:33394
+# -- URL for sidecar info sender service
 SIDECAR_INFO_SENDER_URL=http://95.216.145.221:8000/api/v1/update_sidecars
+# -- URL for the engine API
 ENGINE_API_URL=http://127.0.0.1:33396
+# -- URL for the CB service (defaults to app-name-cb service with cb.port)
 CB_URL=http://127.0.0.1:18550
+# -- Port for the builder service
 BUILDER_PORT=9062
+# -- JWT token for authentication
 JWT=dc49981516e8e72b401a63e6405495a32dafc3939b5d6d83cc319ac0388bca1b
+# -- Time in seconds between slots
 SLOT_TIME=2
+# -- Deadline for commitments in milliseconds
 COMMITMENT_DEADLINE=100
+# -- Ethereum address to receive fees
 FEE_RECIPIENT=0x8aC112a5540f441cC9beBcC647041A6E0D595B94
+# -- Ethereum address of the gateway contract
 GATEWAY_CONTRACT=0x6db20C530b3F96CD5ef64Da2b1b931Cb8f264009
+# -- URL for the Web3Signer service
 WEB3SIGNER_URL=http://127.0.0.1:32786
+# -- Path to CA certificate file
 CA_CERT_PATH=/root/web3signer-25.2.0/tls/web3signer.crt
+# -- Path to combined client certificate and key PEM fil
 CLIENT_COMBINED_PEM_PATH=/root/web3signer-25.2.0/tls/combined.pem
+# -- URL for commit boost signer service
 COMMIT_BOOST_SIGNER_URL=http://5.161.69.231:18551
 ```
 
@@ -44,15 +62,21 @@ COMMIT_BOOST_SIGNER_URL=http://5.161.69.231:18551
 chain = "Holesky"
 
 [pbs]
+# -- Port for the CB service
 port = 18550
+# -- Host address to bind to
 host = "0.0.0.0"
 
+# -- Genesis timestamp in seconds since Unix epoch
 genesis_time_sec=1738648239
+# -- URL for the beacon node RPC
 beacon_rpc="http://5.161.69.231:32782"
+# -- List of relay endpoints to connect to
 [[relays]]
 url = "https://0x821f2a65afb70e7f2e820a925a9b4c80a159620582c1766b1b09729fec178b11ea22abb3a51f07b288be815a1a2ff516@bloxroute.holesky.blxrbdn.com"
 
 [metrics]
+# -- Path to Prometheus configuration file
 prometheus_config = "./prometheus.yml"
 
 [logs]
