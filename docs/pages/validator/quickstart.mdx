@@ -13,32 +13,60 @@ helm package helm-charts
 helm install helm-charts ./helm-charts
 ```
 
+## Env Variables
 
-![Sidecar Setup](/image9.png)
-*The below setup enables you to run the interstate-pbs module and interstate-sidecar via kubernetes helm chart. You are expected to have a running signer (for instructions see signer section) and validator. The helm charts below will connect pbs-module&sidecar to signer.*
+#### Interstate Sidecar
 
-## Setting the Env Variables
-
-Please update values.yaml file
-
-### How to set envs for interstate-cb module
 ```
-port: https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L179
-
-image repo: https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L183
-
-image tag: https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L186
-
-configs: https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L193 ~ https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L217
+COMMITMENT_PORT=9061
+METRICS_PORT=8018
+CHAIN=kurtosis
+BEACON_API_URL=http://127.0.0.1:33404 
+EXECUTION_API_URL=http://127.0.0.1:33394
+SIDECAR_INFO_SENDER_URL=http://95.216.145.221:8000/api/v1/update_sidecars
+ENGINE_API_URL=http://127.0.0.1:33396
+CB_URL=http://127.0.0.1:18550
+BUILDER_PORT=9062
+JWT=dc49981516e8e72b401a63e6405495a32dafc3939b5d6d83cc319ac0388bca1b
+SLOT_TIME=2
+COMMITMENT_DEADLINE=100
+FEE_RECIPIENT=0x8aC112a5540f441cC9beBcC647041A6E0D595B94
+GATEWAY_CONTRACT=0x6db20C530b3F96CD5ef64Da2b1b931Cb8f264009
+WEB3SIGNER_URL=http://127.0.0.1:32786
+CA_CERT_PATH=/root/web3signer-25.2.0/tls/web3signer.crt
+CLIENT_COMBINED_PEM_PATH=/root/web3signer-25.2.0/tls/combined.pem
+COMMIT_BOOST_SIGNER_URL=http://5.161.69.231:18551
 ```
-### How to set envs for interstate-sidecar
-```
-image repo: https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L13
 
-image port: https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L16
+#### Interstate CB Module
 
-envs: https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L132 ~ https://github.com/interstate-labs/proposer-commitment-network/blob/main/helm-charts/values.yaml#L170
 ```
+chain = "Holesky"
+
+[pbs]
+port = 18550
+host = "0.0.0.0"
+
+genesis_time_sec=1738648239
+beacon_rpc="http://5.161.69.231:32782"
+[[relays]]
+url = "https://0x821f2a65afb70e7f2e820a925a9b4c80a159620582c1766b1b09729fec178b11ea22abb3a51f07b288be815a1a2ff516@bloxroute.holesky.blxrbdn.com"
+
+[metrics]
+prometheus_config = "./prometheus.yml"
+
+[logs]
+# Path to the log directory
+# OPTIONAL, DEFAULT: /var/logs/commit-boost
+log_dir_path = "./logs"
+# Log level. Supported values: trace, debug, info, warn, error
+# OPTIONAL, DEFAULT: debug to file, info to stdout
+log_level = "debug"
+# Maximum number of log files to keep
+# OPTIONAL
+max_log_files = 30
+```
+
 ## Check helm-charts
 ```
 kubectl get pods
